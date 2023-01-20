@@ -3,6 +3,9 @@ import { trpc } from "./trpc";
 import { AiFillCaretLeft, AiFillCaretRight, AiOutlineCloseCircle } from "react-icons/ai";
 import { CSSTransition } from "react-transition-group";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function FrontPage() {
     const [userInput, setUserInput] = useState("");
     const [selectedItem, setSelectedItem] = useState(-1)
@@ -15,8 +18,8 @@ export default function FrontPage() {
             setPage(0);
         },
         onError: (data) => {
-
-        }
+            toast.error('❌Something failed') 
+        },
     });
     useEffect(() => {
         searchItem.mutate({ id: "" })
@@ -117,7 +120,16 @@ export default function FrontPage() {
                     </div>
                 </div>
             }
-
+            <ToastContainer position="bottom-right"
+                autoClose={1000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light" />
         </div>
     )
 }
