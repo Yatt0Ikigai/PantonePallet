@@ -1,11 +1,17 @@
 module.exports = {
-  purge: [],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {},
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  content: [
+    "./src/index.html",
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  plugins: [
+    require('tailwindcss-debug-screens'),
+    require('daisyui')
+  ],
 }
