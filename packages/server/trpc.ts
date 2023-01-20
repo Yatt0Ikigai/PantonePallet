@@ -11,8 +11,10 @@ export const appRouter = t.router({
             id: z.string(),
         }))
         .mutation(async ({ input }) => {
-            const items = await axios.get<IReqres>('https://reqres.in/api/resources').catch((err) => { throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })})
-            const result = items.data.data.filter((el) => el.id.toString().includes(input.id));
+            const firstPart = await axios.get<IReqres>('https://reqres.in/api/resources').catch((err) => { throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })})
+            const secPart = await axios.get<IReqres>('https://reqres.in/api/resources?page=2').catch((err) => { throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })})
+            const items = [...firstPart.data.data, ...secPart.data.data];
+            const result = items.filter((el) => el.id.toString().includes(input.id));
             return result
         }),
 });
