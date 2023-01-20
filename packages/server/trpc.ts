@@ -33,7 +33,7 @@ interface IResource {
     id: number,
     name: string,
     year: number,
-    colos: string,
+    color: string,
     pantone_value: string
 }
 
