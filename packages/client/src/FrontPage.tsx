@@ -18,7 +18,7 @@ export default function FrontPage() {
             setPage(0);
         },
         onError: (data) => {
-            toast.error('❌Something failed') 
+            toast.error('❌Something failed')
         },
     });
     useEffect(() => {
@@ -31,11 +31,11 @@ export default function FrontPage() {
     }
 
     return (
-        <div className="w-screen h-screen flex flex-col items-center p-8 relative text-white">
-            <input type="text" placeholder="Type here" className="w-full sm:w-3/4 md:w-1/2 input input-bordered text-center" value={userInput} onChange={validate} pattern='[0-9]' />
+        <div className="w-screen h-screen flex flex-col items-center py-8 px-4 sm:px-10 md:px-20 relative text-white">
+            <input type="text" placeholder="Search for product" className="w-full sm:w-3/4 md:w-1/2 input input-bordered text-center sm:my-5 md:my-10 lg:my-20" value={userInput} onChange={validate} pattern='[0-9]' />
 
-            <div className="w-full py-8">
-                <table className="table sm:table-fixed  w-full overflow-x-auto">
+            <div className="w-full py-8 relative">
+                <table className="table sm:table-fixed  w-full overflow-x-auto ">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -43,7 +43,7 @@ export default function FrontPage() {
                             <th>Year</th>
                         </tr>
                     </thead>
-                    <tbody className='relative h-96 text-black'>
+                    <tbody className='relative text-black'>
                         {
                             items.map((el, index) => {
                                 if (page * 5 <= index && index < page * 5 + 5)
@@ -56,16 +56,16 @@ export default function FrontPage() {
                                     )
                             })
                         }
-                        <button className={`absolute left-0 top-1/2 -translate-x-5 ${page <= 0 ? 'hidden' : ''}`} onClick={() => {
-                            if (page <= 0) return;
-                            setPage(page - 1)
-                        }}><AiFillCaretLeft /></button>
-                        <button className={`absolute right-0 top-1/2 translate-x-5 ${page >= items.length / 5 - 1 ? 'hidden' : ''}`} onClick={() => {
-                            if (page >= items.length / 5 - 1) return;
-                            setPage(page + 1)
-                        }}><AiFillCaretRight /></button>
                     </tbody>
                 </table>
+                <button className={`absolute left-0 top-64 -translate-x-full ${page <= 0 ? 'hidden' : ''}`} onClick={() => {
+                    if (page <= 0) return;
+                    setPage(page - 1)
+                }}><AiFillCaretLeft className='w-5 h-5 md:w-10 md:h-10' /></button>
+                <button className={`absolute right-0 top-64 translate-x-full ${page >= items.length / 5 - 1 ? 'hidden' : ''}`} onClick={() => {
+                    if (page >= items.length / 5 - 1) return;
+                    setPage(page + 1)
+                }}><AiFillCaretRight className='w-5 h-5 md:w-10 md:h-10' /></button>
             </div>
             {
                 selectedItem !== -1
