@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { trpc } from "./trpc";
 import { AiFillCaretLeft, AiFillCaretRight, AiOutlineCloseCircle } from "react-icons/ai";
-import { CSSTransition } from "react-transition-group";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,11 +31,11 @@ export default function FrontPage() {
     }
 
     return (
-        <div className="w-screen h-screen flex flex-col items-center py-8 px-4 sm:px-10 md:px-20 relative text-white">
-            <input type="text" placeholder="Search for product" className="w-full sm:w-3/4 md:w-1/2 input input-bordered text-center sm:my-5 md:my-10 lg:my-20" value={userInput} onChange={validate} pattern='[0-9]' />
+        <div className="relative flex flex-col items-center w-screen h-screen px-4 py-8 text-white sm:px-10">
+            <input type="text" placeholder="Search for product" className="w-full text-center sm:w-3/4 md:w-1/2 input input-bordered sm:my-5 md:my-10" value={userInput} onChange={validate} pattern='[0-9]' />
 
-            <div className="w-full py-8 relative">
-                <table className="table sm:table-fixed  w-full overflow-x-auto ">
+            <div className="relative w-full py-8">
+                <table className="table w-full overflow-x-auto sm:table-fixed ">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -48,10 +48,10 @@ export default function FrontPage() {
                             items.map((el, index) => {
                                 if (page * 5 <= index && index < page * 5 + 5)
                                     return (
-                                        <tr className={`h-20 hover:cursor-pointer`} onClick={() => setSelectedItem(index)} style={{ background: el.color }}>
-                                            <td style={{ background: el.color }} >{el.id}</td>
-                                            <td style={{ background: el.color }}>{el.name}</td>
-                                            <td style={{ background: el.color }}>{el.year}</td>
+                                        <tr className={`h-20 hover:cursor-pointer`} onClick={() => setSelectedItem(index)} style={{ background: el.color }} key={index}>
+                                            <td style={{ background: el.color }} className={"font-bold text-xl capitalize"}>{el.id}</td>
+                                            <td style={{ background: el.color }} className={"font-bold text-xl capitalize"}>{el.name}</td>
+                                            <td style={{ background: el.color }} className={"font-bold text-xl capitalize"}>{el.year}</td>
                                         </tr>
                                     )
                             })
@@ -67,14 +67,22 @@ export default function FrontPage() {
                     setPage(page + 1)
                 }}><AiFillCaretRight className='w-5 h-5 md:w-10 md:h-10' /></button>
             </div>
+            <AnimatePresence
+                initial={false}
+                onExitComplete={() => null}
+            >
             {
                 selectedItem !== -1
                 &&
-                <div className={`z-20 absolute inset-0 flex bg-black bg-opacity-60 justify-center items-center`} >
-                    <div className='modal-box  h-96 w-96 flex flex-col justify-center items-center px-10 py-6'>
+                <motion.div className={`z-20 absolute inset-0 flex bg-black bg-opacity-60 justify-center items-center`} 
+                    initial={{opacity:0}}
+                    animate={{opacity:1}}
+                    exit={{opacity:0}}
+                >
+                    <div className='flex flex-col items-center justify-center px-10 py-6 modal-box h-96 w-96'>
                         <ul style={{ color: items[selectedItem].color }}>
                             <li className='flex items-center justify-center p-3'>
-                                <span className='text-white font-medium'>
+                                <span className='font-medium text-white'>
                                     ID:
                                 </span>
                                 <span className='text-2xl font-bold'>
@@ -82,7 +90,7 @@ export default function FrontPage() {
                                 </span>
                             </li>
                             <li className='flex items-center justify-center p-3'>
-                                <span className='text-white font-medium'>
+                                <span className='font-medium text-white'>
                                     Name:
                                 </span>
                                 <span className='text-2xl font-bold'>
@@ -90,7 +98,7 @@ export default function FrontPage() {
                                 </span>
                             </li>
                             <li className='flex items-center justify-center p-3'>
-                                <span className='text-white font-medium'>
+                                <span className='font-medium text-white'>
                                     Color:
                                 </span>
                                 <span className='text-2xl font-bold'>
@@ -98,7 +106,7 @@ export default function FrontPage() {
                                 </span>
                             </li>
                             <li className='flex items-center justify-center p-3'>
-                                <span className='text-white font-medium'>
+                                <span className='font-medium text-white'>
                                     Pantone_value:
                                 </span>
                                 <span className='text-2xl font-bold'>
@@ -106,7 +114,7 @@ export default function FrontPage() {
                                 </span>
                             </li>
                             <li className='flex items-center justify-center p-3'>
-                                <span className='text-white font-medium'>
+                                <span className='font-medium text-white'>
                                     Year:
                                 </span>
                                 <span className='text-2xl font-bold'>
@@ -118,8 +126,9 @@ export default function FrontPage() {
                         <button onClick={() => setSelectedItem(-1)} className={'absolute bottom-0 right-0 -translate-x-full -translate-y-full'}><AiOutlineCloseCircle className='w-8 h-8' /></button>
 
                     </div>
-                </div>
+                </motion.div>
             }
+            </AnimatePresence>
             <ToastContainer position="bottom-right"
                 autoClose={1000}
                 hideProgressBar={false}
